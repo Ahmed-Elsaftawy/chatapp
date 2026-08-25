@@ -1,0 +1,19 @@
+# التجاهل الشامل لجميع مجلدات node_modules في كامل المشروع
+node_modules/
+
+# ملفات البيئة المتغيرة الخاصة بكل خدمة
+.env
+.env.local
+.env.*.local
+
+# مجلدات البناء
+dist/
+build/
+.next/
+
+# ملفات الـ Logs والـ OS
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.DS_Store
