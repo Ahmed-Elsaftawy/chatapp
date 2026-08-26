@@ -30,5 +30,8 @@
     "helmet": "^8.3.0",
     "nodemon": "^3.1.14",
     "pg": "^8.23.0"
+  },
+  "devDependencies": {
+    "@types/node": "^26.2.0"
   }
 }

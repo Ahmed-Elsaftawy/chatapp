@@ -2,14 +2,19 @@ import { createApp } from './app.js'
 import { createServer } from 'http'
 import { env } from './config/env.js'
 import { logger } from './utils/logger.js'
+import { connectDB } from './core/config.js'
+import { pool } from './core/connect_db.js'
 const main = async () => {
     try {
+
         const app = createApp()
         const server = createServer(app)
         const port = env.AUTH_SERVER_PORT;
 
-        server.listen(port, () => {
+        server.listen(port, async () => {
             logger.info({ port }, `Auth server is running....`)
+            await connectDB()
+            logger.info(`Auth-database is connected....`)
 
         })
 
