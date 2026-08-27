@@ -11,6 +11,11 @@ const envSchema = z.object({
     DB_PASSWORD: z.string(),
     DB_PORT: z.string(),
     DB_USER: z.string(),
+    JWT_SECRET: z.string(),
+    JWT_ACCESS_TOKEN_EXPIRY: z.string().default('15m'),
+    JWT_REFRESH_SECRET: z.string(),
+    JWT_REFRESH_TOKEN_EXPIRY: z.string().default('30d'),
+
 })
 
 type EnvType = z.infer<typeof envSchema>
