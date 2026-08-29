@@ -15,9 +15,9 @@ export interface LoginInputs {
 export interface UserData {
     id: string,
     email: string,
-    displayName: string
+    display_name: string
     created_at: Date,
-
+    password_hash?: string
 }
 
 export interface AuthTokens {

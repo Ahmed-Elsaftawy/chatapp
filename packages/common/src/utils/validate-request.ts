@@ -1,10 +1,10 @@
 import { HttpError } from '../Errors/http-error.js'
 import type { NextFunction, Request, Response } from 'express'
 
-import { AnyZodObject, ZodError } from 'zod/v3'
+import { ZodObject, ZodError } from 'zod'
 
 
-type Schema = AnyZodObject;
+type Schema = ZodObject;
 type ParamRecord = Record<string, string>;
 type QueryRecord = Record<string, unknown>;
 
@@ -15,21 +15,12 @@ export interface RequestValidationSchema {
 }
 
 
-
-const formatError = (err: ZodError) => {
-    return err.errors.map((err) => ({
-        path: err.path.join('.'),
-        message: err.message
-    }))
-
-}
-
 export const validateRequest = (schemas: RequestValidationSchema) => {
     return (req: Request, res: Response, next: NextFunction) => {
         try {
             if (schemas.body) {
                 const parsedBody = schemas.body.parse(req.body) as unknown;
-                req.body = parsedBody;
+                req.body = parsedBody
             }
             if (schemas.params) {
                 const parsedParams = schemas.params.parse(req.params) as Request['params'];
@@ -40,9 +31,10 @@ export const validateRequest = (schemas: RequestValidationSchema) => {
                 req.query = parsedQuery
             }
             next()
-        } catch (err) {
+        } catch (err: any) {
             if (err instanceof ZodError) {
-               return next(new HttpError(422, err.message))
+
+                return next(new HttpError(422, err.message))
             }
             return err
         }
