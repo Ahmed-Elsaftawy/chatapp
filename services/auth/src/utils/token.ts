@@ -2,7 +2,6 @@ import { env } from '@/config/env.js'
 import { generateRefreshTokenRepo } from '@/repository/refresh.token.js';
 import { RefreshToken, UserData } from '@/types/auth.js'
 import jwt, { Secret, SignOptions } from 'jsonwebtoken'
-import { asyncWrapper } from './async.wrapper.js';
 import { logger } from '@/utils/logger.js';
 import { HttpError } from '@chatapp/common';
 import bcrypt from 'bcryptjs';
@@ -14,7 +13,7 @@ const ACCESS_TOKEN_EXPIRY: string = env.JWT_ACCESS_TOKEN_EXPIRY
 const REFRESH_TOKEN_EXPIRY: string = env.JWT_REFRESH_TOKEN_EXPIRY
 
 
-export const genrateAccessToken = (payload: UserData) => {
+export const genrateAccessToken = (payload: UserData): string => {
     return jwt.sign(payload, ACCESS_TOKEN_SECRET, {
         expiresIn: ACCESS_TOKEN_EXPIRY as SignOptions['expiresIn']
     })
@@ -34,14 +33,14 @@ export const generateRefreshToken = async (userId: string) => {
 
 
         return jwt.sign(
-            { sub: userId, tokenId },
+            { userId, tokenId },
             REFRESH_TOKEN_SECRET,
             { expiresIn: REFRESH_TOKEN_EXPIRY as SignOptions['expiresIn'] })
 
 
-    } catch (err) {
+    } catch (err: any) {
         logger.error({ err }, `error with creating refresh token`);
-        throw new HttpError(500, 'problem with creating refresh token');
+        throw new HttpError(500, `${err.message}`);
     }
 }
 

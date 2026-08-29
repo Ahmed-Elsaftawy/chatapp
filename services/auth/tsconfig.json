@@ -17,7 +17,7 @@
   },
   "include": [
     "src"
-  ],
+, "../../packages/common/src/utils/async.wrapper.ts"  ],
   "references": [
     {
       "path": "../../packages/common"

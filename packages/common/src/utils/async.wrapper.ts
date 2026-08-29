@@ -1,5 +1,5 @@
-import type { Request, Response, NextFunction } from 'express'
-export function asyncWrapper(fn: Function) {
+import type { Request, Response, NextFunction, RequestHandler } from 'express'
+export function asyncWrapper(fn: RequestHandler) {
 
     return (req: Request, res: Response, next: NextFunction) => {
         try {

@@ -29,7 +29,7 @@ export const validateRequest = (schemas: RequestValidationSchema) => {
         try {
             if (schemas.body) {
                 const parsedBody = schemas.body.parse(req.body) as unknown;
-                req.body = parsedBody
+                req.body = parsedBody;
             }
             if (schemas.params) {
                 const parsedParams = schemas.params.parse(req.params) as Request['params'];

@@ -6,8 +6,8 @@ import { AuthResponse, LoginInputs, RegisterInputs, UserData } from "@/types/aut
 export const registerRepo = async (inputs: RegisterInputs): Promise<UserData> => {
     const { email, password, displayName } = inputs;
     const user = await pool.query(
-        `INSERT INTO user_credentials1(email,display_name,password)
-        VALUES($1,$2,$3) RETURNING email,display_name,id`, [email, displayName, password]);
+        `INSERT INTO user_credentials1(email,display_name,password_hash)
+        VALUES($1,$2,$3) RETURNING *`, [email, displayName, password]);
     return user.rows[0]
 }
 
