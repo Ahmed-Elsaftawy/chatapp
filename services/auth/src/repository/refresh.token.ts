@@ -18,3 +18,9 @@ export const generateRefreshTokenRepo = async (payload: RefreshToken) => {
         new HttpError(500, err.message, 'problem with database')
     }
 }
+
+export const revokeRefreshTokenRepo = async (userId: string) => {
+
+    await pool.query('DELETE FROM refresh_tokens WHERE user_id =$1', [userId]);
+    return;
+}

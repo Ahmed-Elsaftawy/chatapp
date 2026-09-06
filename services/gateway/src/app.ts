@@ -3,6 +3,7 @@ import helmet from 'helmet'
 import cors from 'cors'
 import { errorHandler } from '@/middlewares/erorr-handler.js';
 import { HttpError } from '@chatapp/common';
+import { authRoute } from './routes/index.js';
 export const createApp = (): Application => {
     try {
         const app = express();
@@ -13,6 +14,8 @@ export const createApp = (): Application => {
             credentials: true,
         }))
         app.use(express.json());
+        app.use(express.urlencoded({extended:true}));
+        authRoute(app);
         app.use((req, res) => {
             return res.status(404).json({ status: "error", msg: "not found" });
         })

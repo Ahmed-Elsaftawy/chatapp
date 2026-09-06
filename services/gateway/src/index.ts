@@ -8,33 +8,31 @@ const main = async () => {
     try {
         const app: Application = createApp();
         const server: Server = createServer();
-        const port = env.PORT
+        const port = env.GATEWAY_PORT;
 
         server.listen(port, async () => {
-            logger.info({ port }, `Auth server is running....`)
-            logger.info(`Auth-database is connected....`)
-
+            logger.info({ port }, `gateway server is running....`);
         })
 
 
         const shutdown = () => {
             logger.info("shutting down the auth server")
             Promise.all([]).catch((err: unknown) => {
-                logger.error({ err }, "error with colsing auth service")
+                logger.error({ err }, "error with colsing auth service");
             }).finally(() => {
                 server.close(() => {
-                    process.exit(0)
+                    process.exit(0);
 
                 });
             })
         }
 
-        process.on('SIGINT', shutdown)
-        process.on('SIGTERM', shutdown)
+        process.on('SIGINT', shutdown);
+        process.on('SIGTERM', shutdown);
 
     } catch (err) {
-        logger.error({ err }, "failed to start auth server")
-        process.exit(1)
+        logger.error({ err }, "failed to start auth server");
+        process.exit(1);
     }
 }
 

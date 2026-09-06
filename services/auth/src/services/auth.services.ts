@@ -4,6 +4,7 @@ import { checkUser, loginRepo, registerRepo } from '@/repository/user.repo.js'
 import { asyncWrapper, HttpError } from "@chatapp/common";
 import { generateRefreshToken, genrateAccessToken, verifyPassword } from "@/utils/token.js";
 import { logger } from "@/utils/logger.js";
+import { revokeRefreshTokenRepo } from "@/repository/refresh.token.js";
 
 
 export const register = async (inputs: RegisterInputs): Promise<AuthResponse> => {
@@ -48,4 +49,9 @@ export const login = async (inputs: LoginInputs): Promise<AuthResponse> => {
         logger.error({ err }, "eror with login service");
         throw new HttpError(500, err.message)
     }
+}
+
+export const revoke = async (userId: string): Promise<string> => {
+    await revokeRefreshTokenRepo(userId);
+    return 'user Loggedout successfully'
 }
