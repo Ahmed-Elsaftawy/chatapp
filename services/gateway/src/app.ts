@@ -2,19 +2,24 @@ import express, { Application } from 'express';
 import helmet from 'helmet'
 import cors from 'cors'
 import { errorHandler } from '@/middlewares/erorr-handler.js';
-import { HttpError } from '@chatapp/common';
+import { createInternalAuth, HttpError } from '@chatapp/common';
 import { authRoute } from './routes/index.js';
+import { env } from './config/env.js';
+import cookieParser from 'cookie-parser';
 export const createApp = (): Application => {
     try {
         const app = express();
 
         app.use(helmet());
+        app.use(cookieParser())
         app.use(cors({
             origin: '*',
             credentials: true,
         }))
         app.use(express.json());
         app.use(express.urlencoded({extended:true}));
+
+
         authRoute(app);
         app.use((req, res) => {
             return res.status(404).json({ status: "error", msg: "not found" });

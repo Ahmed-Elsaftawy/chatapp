@@ -15,7 +15,7 @@ const envSchema = z.object({
     JWT_ACCESS_TOKEN_EXPIRY: z.string().default('15m'),
     JWT_REFRESH_SECRET: z.string(),
     JWT_REFRESH_TOKEN_EXPIRY: z.string().default('30d'),
-
+    INTERNAL_AUTH_TOKEN: z.string().min(12)
 })
 
 type EnvType = z.infer<typeof envSchema>

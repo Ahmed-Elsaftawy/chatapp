@@ -7,7 +7,7 @@ import { logger } from "./utils/logger.js";
 const main = async () => {
     try {
         const app: Application = createApp();
-        const server: Server = createServer();
+        const server: Server = createServer(app);
         const port = env.GATEWAY_PORT;
 
         server.listen(port, async () => {

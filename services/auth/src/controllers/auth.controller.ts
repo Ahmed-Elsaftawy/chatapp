@@ -25,7 +25,7 @@ export const loginHandler = asyncWrapper(async (req, res, next) => {
 
     res.cookie('refreshToken', refreshToken, {
         httpOnly: true,
-        secure: true,
+        secure: false,
         sameSite: "strict"
     })
 

@@ -7,4 +7,6 @@ export const pool = new Pool({
     password: env.DB_PASSWORD,
     port: Number(env.DB_PORT!),
     user: env.DB_USER,
+    statement_timeout: 10000,
+    connectionTimeoutMillis: 5000
 })

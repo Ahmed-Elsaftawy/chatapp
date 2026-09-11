@@ -17,6 +17,7 @@ export const register = async (inputs: RegisterInputs): Promise<AuthResponse> =>
         const hashedPassword = await bcrypt.hash(inputs.password, 12);
 
         inputs.password = hashedPassword;
+
         const user = await registerRepo(inputs);
         const { id, email, display_name, created_at } = user;
 

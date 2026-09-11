@@ -5,7 +5,8 @@ import { env } from "@/config/env.js";
 
 const client = axios.create({
     baseURL: env.AUTH_SERVICE_URL,
-    timeout: 5000
+    timeout: 5000,
+    withCredentials: true
 })
 
 
@@ -47,7 +48,9 @@ export interface RefreshPayload {
 export interface RevokePayload {
     userId: string
 }
-
+export interface CookiesSchema {
+    refreshToken: string
+}
 const resolvedMessage = (status: number, data: unknown): string => {
     if (typeof data === 'object' && data && 'message' in data) {
         const message = (data as Record<string, unknown>).message;
@@ -81,11 +84,27 @@ export const authProxyService = {
         try {
 
             const response = await client.post('/auth/login', payload, authHeader);
-            return response.data    
+            return {
+                data: response.data,
+                headers: response.headers['set-cookie'],
+            }
 
 
         } catch (err) {
             handelAxiosError(err)
         }
+    },
+    async revoke(cookies: CookiesSchema) {
+        const response = await client.post('/auth/revoke', {}, {
+            headers: {
+                "X-Internal-Token": env.INTERNAL_API_TOKEN,
+                ...(cookies?.refreshToken
+                    ? { Cookie: `refreshToken=${cookies.refreshToken}` }
+                    : {})
+            }
+        });
+        console.log(response.data);
+
+        return response.data
     }
 }

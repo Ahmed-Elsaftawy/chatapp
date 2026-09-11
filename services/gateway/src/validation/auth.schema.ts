@@ -24,5 +24,11 @@ export const refreshSchema = z.object({
 
 
 export const revokeSchema = z.object({
-    userId: z.uuid()
+    refreshToken: z.string(),
+    userId: z.uuid().optional()
+})
+
+
+export const cookiesSchema = z.object({
+    refreshToken: z.string()
 })

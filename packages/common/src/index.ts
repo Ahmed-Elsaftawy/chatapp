@@ -1,3 +1,4 @@
+export { createInternalAuth } from "./Errors/internal-auth.js"
 
 export * from "./logger.js"
 export type { Logger } from 'pino'
