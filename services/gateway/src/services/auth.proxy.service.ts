@@ -1,6 +1,7 @@
 import axios from "axios";
 import { HttpError } from "@chatapp/common";
 import { env } from "@/config/env.js";
+import { AxoisData } from "@/validation/auth.schema.js";
 
 
 const client = axios.create({
@@ -53,7 +54,11 @@ export interface CookiesSchema {
 }
 const resolvedMessage = (status: number, data: unknown): string => {
     if (typeof data === 'object' && data && 'message' in data) {
-        const message = (data as Record<string, unknown>).message;
+        const message = (data as Record<string, unknown>).msg;
+        console.log('==========================Message========================')
+        console.log('message from axoist', message);
+        console.log('==========================Message========================')
+
         if (typeof message == 'string' && message) {
             return message;
         }
@@ -63,11 +68,11 @@ const resolvedMessage = (status: number, data: unknown): string => {
 }
 
 const handelAxiosError = (error: any): never => {
-    if (axios.isAxiosError(error) || !error.response) {
+    if (axios.isAxiosError(error) && !error.response) {
         throw new HttpError(500, 'Authentacions servser is not available');
     }
-    const { status, data } = error.response as { status: number, data: unknown };
-    throw new HttpError(status, resolvedMessage(status, data));
+    const { status, data } = error.response as { status: number, data: AxoisData };
+    throw new HttpError(status, data.msg);
 }
 
 

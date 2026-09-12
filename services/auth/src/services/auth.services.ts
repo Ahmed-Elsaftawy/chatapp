@@ -1,17 +1,19 @@
 import { AuthResponse, LoginInputs, RegisterInputs, UserData } from "@/types/auth.js";
 import bcrypt from "bcryptjs";
 import { checkUser, loginRepo, registerRepo } from '@/repository/user.repo.js'
-import { asyncWrapper, HttpError } from "@chatapp/common";
+import { HttpError } from "@chatapp/common";
 import { generateRefreshToken, genrateAccessToken, verifyPassword } from "@/utils/token.js";
 import { logger } from "@/utils/logger.js";
 import { revokeRefreshTokenRepo } from "@/repository/refresh.token.js";
+import { NextFunction } from "express";
 
 
-export const register = async (inputs: RegisterInputs): Promise<AuthResponse> => {
+export const register = async (inputs: RegisterInputs, next: NextFunction): Promise<AuthResponse> => {
     try {
         const existing = await checkUser(inputs);
 
         if (existing) {
+
             throw new HttpError(400, 'this user already exists');
         }
         const hashedPassword = await bcrypt.hash(inputs.password, 12);
@@ -25,9 +27,9 @@ export const register = async (inputs: RegisterInputs): Promise<AuthResponse> =>
         const accessToken = genrateAccessToken({ id, email, display_name, created_at })
 
         return { accessToken, refreshToken, user: { email, display_name, id, created_at } }
-    } catch (err) {
-        logger.error({ err }, "Error with Register Service");
-        throw new HttpError(500, 'Error with Register Service')
+    } catch (err: any) {
+        logger.error({ err }, err.message);
+        throw new HttpError(400, err.message)
     }
 }
 

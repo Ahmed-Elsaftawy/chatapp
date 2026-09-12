@@ -5,10 +5,12 @@ import { asyncWrapper } from "@chatapp/common";
 
 
 export const registerUser = asyncWrapper(async (req, res, next) => {
-    const payload = registerSchema.parse(req.body);
-    const response = await authProxyService.register(payload);
+   
+        const payload = registerSchema.parse(req.body);
+        const response = await authProxyService.register(payload);
 
-    res.status(201).json(response);
+        res.status(201).json(response);
+    
 })
 
 

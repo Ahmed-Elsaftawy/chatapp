@@ -5,17 +5,23 @@ import { asyncWrapper } from '@chatapp/common';
 
 
 export const registerHandler = asyncWrapper(async (req, res, next) => {
-    const payload: RegisterInputs = req.body;
-    const { accessToken, refreshToken, user } = await register(payload);
+    try {
+        const payload: RegisterInputs = req.body;
+        const { accessToken, refreshToken, user } = await register(payload, next);
 
-    res.cookie('refreshToken', refreshToken, {
-        httpOnly: true,
-        secure: true,
-        sameSite: "strict"
-    })
+        res.cookie('refreshToken', refreshToken, {
+            httpOnly: true,
+            secure: true,
+            sameSite: "strict"
+        })
 
-    res.status(201).json({ accessToken, user });
-    return;
+        res.status(201).json({ accessToken, user });
+        return;
+    } catch (err) {
+        next(err);
+
+
+    }
 })
 
 export const loginHandler = asyncWrapper(async (req, res, next) => {

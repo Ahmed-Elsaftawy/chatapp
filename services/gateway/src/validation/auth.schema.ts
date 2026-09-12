@@ -1,4 +1,4 @@
-import { z } from '@chatapp/common'
+import { HttpError, z } from '@chatapp/common'
 
 
 export const registerSchema = z.object({
@@ -32,3 +32,10 @@ export const revokeSchema = z.object({
 export const cookiesSchema = z.object({
     refreshToken: z.string()
 })
+
+export interface AxoisData {
+    msg: string,
+    error: HttpError
+
+
+}
